@@ -29,3 +29,25 @@ def get_user(db: Session, id: int):
         # response.status_code = status.HTTP_404_NOT_FOUND
         # return {'detail': f"Blog with the id = {id} is not available "}
     return user
+
+
+def delete_user(db: Session, id: int):
+    user = db.query(models.User).filter(models.User.user_id == id)
+    if not user.first():
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"User with the id = {id} is not available")
+
+    user.delete(synchronize_session=False)
+    db.commit()
+    return status.HTTP_204_NO_CONTENT
+
+
+def update_user(id: int, db: Session, request: schemas.UpdateUser):
+    user = db.query(models.User).filter(models.User.user_id == id)
+    if not user.first():
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"User with the id = {id} is not available")
+
+    user.update({models.User.name: request.name, models.User.email: request.email})
+    db.commit()
+    return 'Updated'

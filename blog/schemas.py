@@ -18,6 +18,11 @@ class User(BaseModel):
     # user_id: int
 
 
+class UpdateUser(BaseModel):
+    name: str
+    email: str
+
+
 class ShowUsers(BaseModel):
     name: str
     email: str

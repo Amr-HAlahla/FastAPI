@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException, status
 from blog import schemas
 from typing import List
 from sqlalchemy.orm import Session
@@ -25,3 +25,13 @@ def all_users(db: Session = Depends(get_db), current_user: schemas.User = Depend
 @router.get('/{id}', response_model=schemas.ShowUsers)
 def get_user(id, db: Session = Depends(get_db), current_user: schemas.User = Depends(get_current_user)):
     return user.get_user(db, id)
+
+
+@router.delete('/{id}')
+def delete_user(id, db: Session = Depends(get_db), current_user: schemas.User = Depends(get_current_user)):
+    return user.delete_user(db, id)
+
+
+@router.put('/{id}', status_code=status.HTTP_202_ACCEPTED)
+def update_user(id, request: schemas.UpdateUser, db: Session = Depends(get_db)):
+    return user.update_user(id, db, request)

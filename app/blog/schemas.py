@@ -28,6 +28,11 @@ class ShowUsers(BaseModel):
         orm_mode = True
 
 
+class UpdateUser(BaseModel):
+    name: str
+    email: str
+
+
 class ShowRelatedUser(BaseModel):
     name: str
     email: str
